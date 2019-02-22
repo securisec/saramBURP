@@ -1,15 +1,29 @@
 package burp;
 
+
 import gui.PreferencesPanel;
 
-import javax.swing.*;
-import java.util.*;
-import java.awt.datatransfer.*;
-import java.awt.event.*;
-import java.awt.Component;
-import java.awt.Toolkit;
-import javax.swing.JMenuItem;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 
 public class BurpExtender implements IBurpExtender, IContextMenuFactory, ClipboardOwner, ITab
@@ -21,21 +35,18 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
     private final static String SENDREQRES = "Send Req/Res to saramBURP";
 
     public static PreferencesPanel preferencesPanel;
+    public static IBurpExtenderCallbacks publicCallbacks;
 
     @Override
     public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks)
     {
+        publicCallbacks = callbacks;
         helpers = callbacks.getHelpers();
         callbacks.setExtensionName(NAME);
         callbacks.registerContextMenuFactory(this);
         preferencesPanel = new PreferencesPanel();
-
-        JTabbedPane tabs = new JTabbedPane();
-
-        tabs.addTab("Encrypted",preferencesPanel);
-        preferencesPanel.repaint();
-        callbacks.customizeUiComponent(tabs);
         callbacks.addSuiteTab(this);
+
     }
 
     @Override
@@ -74,8 +85,76 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 
         }
 
-        Toolkit.getDefaultToolkit().getSystemClipboard()
-                .setContents(new StringSelection(py.toString()), this);
+        /*json = {
+                'id': str(uuid1()), // this needs to be created by Java
+                'type': 'tool',
+                'output': self.output, //req/res goes here
+                'command': 'Burp suite',
+                'user': self.user, //username
+                'comment': ['saramBURP'],
+        'options': {
+            'marked': 2
+        },
+        'time': str(datetime.utcnow()) // Java has to timestamp this
+        }*/
+
+
+        JSONObject json = new JSONObject();
+        String uuid = UUID.randomUUID().toString();
+        json.put("id", uuid);
+        json.put("type", "tool");
+        json.put("output", py.toString());
+        json.put("command", "Burp suite");
+
+        String username = publicCallbacks.loadExtensionSetting("username");
+        json.put("user", username);
+
+        List<String> list = new ArrayList<>();
+        list.add("saramBURP");
+        JSONArray ja = new JSONArray(list);
+
+        json.put("comment", ja);
+
+        JSONObject insidejson = new JSONObject();
+        insidejson.put("marked", 2);
+        json.put("options", insidejson);
+
+        String timestamp = java.time.Instant.now().toString();
+        json.put("time", timestamp);
+
+
+        HttpClient httpClient = HttpClientBuilder.create().build(); //Use this instead
+
+        try {
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(publicCallbacks.loadExtensionSetting("url"));
+            stringBuilder.append("/");
+            stringBuilder.append(publicCallbacks.loadExtensionSetting("token"));
+            stringBuilder.append("/");
+
+            String uri = stringBuilder.toString();
+
+            HttpPost request = new HttpPost(uri);
+            StringEntity params =new StringEntity(json.toString());
+            request.addHeader("content-type", "application/json");
+            request.setEntity(params);
+            HttpResponse response = httpClient.execute(request);
+
+            BurpExtender.publicCallbacks.issueAlert(json.toString());
+            //handle response here...
+
+        }catch (Exception ex) {
+
+            //handle exception here
+
+        } finally {
+            //Deprecated
+            //httpClient.getConnectionManager().shutdown();
+        }
+
+        /*Toolkit.getDefaultToolkit().getSystemClipboard()
+                .setContents(new StringSelection(py.toString()), this);*/
     }
 
     @Override
@@ -88,6 +167,6 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 
     @Override
     public Component getUiComponent() {
-        return preferencesPanel;
+        return preferencesPanel.getPanel();
     }
 }
