@@ -1,7 +1,6 @@
 package gui;
 
 import burp.BurpExtender;
-import burp.IBurpExtenderCallbacks;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +36,7 @@ public class PreferencesPanel extends JPanel {
                 BurpExtender.publicCallbacks.saveExtensionSetting("saram_url", String.valueOf(urlTextField.getText()));
                 BurpExtender.publicCallbacks.saveExtensionSetting("saram_token", String.valueOf(tokenTextField.getText()));
                 BurpExtender.publicCallbacks.saveExtensionSetting("saram_user", String.valueOf(usernameTextField.getText()));
-                //BurpExtender.publicCallbacks.issueAlert(String.valueOf(urlTextField.getText()));
+                BurpExtender.publicCallbacks.issueAlert(String.valueOf(urlTextField.getText()));
             }
         });
     }

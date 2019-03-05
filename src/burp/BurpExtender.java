@@ -3,20 +3,16 @@ package burp;
 
 import gui.PreferencesPanel;
 
-
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPatch;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
+import org.json.simple.JSONObject;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,8 +22,7 @@ import java.util.List;
 import java.util.UUID;
 
 
-public class BurpExtender implements IBurpExtender, IContextMenuFactory, ClipboardOwner, ITab
-{
+public class BurpExtender implements IBurpExtender, IContextMenuFactory, ClipboardOwner, ITab {
     private IExtensionHelpers helpers;
 
     private final static String NAME = "saramBURP";
@@ -38,8 +33,7 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
     public static IBurpExtenderCallbacks publicCallbacks;
 
     @Override
-    public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks)
-    {
+    public void registerExtenderCallbacks(IBurpExtenderCallbacks callbacks) {
         publicCallbacks = callbacks;
         helpers = callbacks.getHelpers();
         callbacks.setExtensionName(NAME);
@@ -74,6 +68,7 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
     private void sendData(IHttpRequestResponse[] messages, Boolean onlyReq) {
         StringBuilder py = new StringBuilder();
 
+
         for (IHttpRequestResponse message : messages) {
             byte[] req = message.getRequest();
             py.append(new String(req));
@@ -85,17 +80,18 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 
         }
 
-        /*json = {
-                'id': str(uuid1()), // this needs to be created by Java
-                'type': 'tool',
-                'output': self.output, //req/res goes here
-                'command': 'Burp suite',
-                'user': self.user, //username
-                'comment': ['saramBURP'],
-        'options': {
-            'marked': 2
-        },
-        'time': str(datetime.utcnow()) // Java has to timestamp this
+
+        /* json = {
+    	    'id': str(uuid1()), // this needs to be created by Java
+	        'type': 'tool',
+	        'output': self.output, //req/res goes here
+	        'command': 'Burp suite',
+	        'user': self.user, //username
+	        'comment': ['saramBURP'],
+	        'options': {L̥
+		        'marked': 2
+	        },
+	        'time': str(datetime.utcnow()) // Java has to timestamp this
         }*/
 
 
@@ -106,14 +102,15 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
         json.put("output", py.toString());
         json.put("command", "Burp suite");
 
-        String username = publicCallbacks.loadExtensionSetting("username");
+        String username = publicCallbacks.loadExtensionSetting("saram_user");
         json.put("user", username);
 
         List<String> list = new ArrayList<>();
-        list.add("saramBURP");
-        JSONArray ja = new JSONArray(list);
 
-        json.put("comment", ja);
+        list.add("saramBURP");
+
+
+        json.put("comment", list);
 
         JSONObject insidejson = new JSONObject();
         insidejson.put("marked", 2);
@@ -127,38 +124,36 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 
         try {
 
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(publicCallbacks.loadExtensionSetting("url"));
-            stringBuilder.append("/");
-            stringBuilder.append(publicCallbacks.loadExtensionSetting("token"));
-            stringBuilder.append("/");
+            String uri = publicCallbacks.loadExtensionSetting("saram_url") +
+                    "/" + publicCallbacks.loadExtensionSetting("saram_token") + "/";
 
-            String uri = stringBuilder.toString();
+            BurpExtender.publicCallbacks.issueAlert(uri);
 
-            HttpPost request = new HttpPost(uri);
-            StringEntity params =new StringEntity(json.toString());
+            HttpPatch request = new HttpPatch(uri);
+            StringEntity params = new StringEntity(json.toString());
             request.addHeader("content-type", "application/json");
             request.setEntity(params);
+            System.out.println(request);
             HttpResponse response = httpClient.execute(request);
 
-            BurpExtender.publicCallbacks.issueAlert(json.toString());
+            BurpExtender.publicCallbacks.issueAlert("response is: " + response + " data: " + json.toString());
+            System.out.println(response);
             //handle response here...
 
-        }catch (Exception ex) {
+        } catch (Exception ex) {
 
             //handle exception here
+            BurpExtender.publicCallbacks.issueAlert(ex.toString());
 
         } finally {
             //Deprecated
             //httpClient.getConnectionManager().shutdown();
         }
-
-        /*Toolkit.getDefaultToolkit().getSystemClipboard()
-                .setContents(new StringSelection(py.toString()), this);*/
     }
 
     @Override
-    public void lostOwnership(Clipboard aClipboard, Transferable aContents) {}
+    public void lostOwnership(Clipboard aClipboard, Transferable aContents) {
+    }
 
     @Override
     public String getTabCaption() {

@@ -10,7 +10,7 @@ package burp;
  * license terms for those products.
  */
 
-import javax.swing.JMenuItem;
+import javax.swing.*;
 import java.util.List;
 
 /**
