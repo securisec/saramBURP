@@ -7,7 +7,6 @@ before_script:
 script:
 - "./gradlew customFatJar"
 - ls -l build/libs/
-
 deploy:
   provider: releases
   api_key:
@@ -17,3 +16,6 @@ deploy:
   skip_cleanup: true
   on:
     repo: securisec/saramBURP
+notifications:
+  slack:
+    secure: ps6/XYfE7C8RwtIMhBi2GdqJZT+0NwPu/ZSf/Rz0OO3HO7Q2oHc4WfCFNgE2r2IRBzMYn7pwJi/UncRDMfSS2FUw0LQU5OF1XbIHk+7xJXsjSKt33/yWq0Dbd4hUJsSjMDVCVCc0NmurS1+k2bUdmP8Y5OtclA0FbYuf3VeXHo1ES355E/60tnW3N/uvIfRsmBnmFsKoU4zSo3ySrikIWyfPOdFPOCNVUyRPTFYdZLBUpknCvcrFbsYTkeUUcL0dNzTia8+5HJuFNNPb8Ecgf5/EjcHLAnmxssq5hLC1ZOCMeM5ydsBZ05wKarVCI3K+RnjKk5SdN2vW+GJzXPxfvI4hrFt6mdJgGKn+4fmrJ4158gF4sMX6LYN3jQCAFD1xf1ZzZDZ/uDYP8JWgOjb6loPkj8sKnh33xvUBOf6ycQl0uMt1vFVxV+j6tjATQcP4SlfG6F3y59d7iwbTedood7pW/jHe4UofbecYk04PFAloNpOzl/GGydqEvSzpqq4697vyiMJgXNfqwRIZEcbc28wpsFT2CLvJcgcH3pFjNEjLDTa+omx58t0eOUkTLSDqt1q0YuAxM5YbkvnP/qqt1s+7RKoRIYT7S9It17ZSUR2TmethWLskrN8S+fMRCRiYXkzl+tLMg2F1wVBUdrewV1Jh5lbk1lMkeeJoshwFiUc=
