@@ -71,10 +71,11 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 
         for (IHttpRequestResponse message : messages) {
             byte[] req = message.getRequest();
+            py.append("\n===============REQUEST===============\n\n");
             py.append(new String(req));
             if (!onlyReq) {
                 byte[] res = message.getResponse();
-                py.append("\n\n==============================\n\n");
+                py.append("\n\n===============RESPONSE===============\n\n");
                 py.append(new String(res));
             }
 
