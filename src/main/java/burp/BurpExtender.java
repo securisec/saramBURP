@@ -71,11 +71,10 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 
         for (IHttpRequestResponse message : messages) {
             byte[] req = message.getRequest();
-            py.append("\n===============REQUEST===============\n\n");
             py.append(new String(req));
             if (!onlyReq) {
                 byte[] res = message.getResponse();
-                py.append("\n\n===============RESPONSE===============\n\n");
+                py.append("\n\n==============================\n\n");
                 py.append(new String(res));
             }
 
@@ -133,6 +132,10 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
             HttpPatch request = new HttpPatch(uri);
             StringEntity params = new StringEntity(json.toString());
             request.addHeader("content-type", "application/json");
+
+            request.addHeader("x-saram-apikey", publicCallbacks.loadExtensionSetting("saram_api"));
+            request.addHeader("x-saram-username", publicCallbacks.loadExtensionSetting("saram_user"));
+
             request.setEntity(params);
             System.out.println(request);
             HttpResponse response = httpClient.execute(request);
