@@ -88,8 +88,8 @@ public class PreferencesPanel extends JPanel {
                 JSONObject obj = new JSONObject();
                 obj.put("username", String.valueOf(usernameTextField.getText()));
                 obj.put("apiKey", String.valueOf(apiKeyTextField.getText()));
-                obj.put("token", String.valueOf(tokenTextField.getText()));
-                obj.put("url", String.valueOf(urlTextField.getText()));
+                /*obj.put("token", String.valueOf(tokenTextField.getText()));
+                obj.put("url", String.valueOf(urlTextField.getText()));*/
 
 
                 // try-with-resources statement based on post comment below :)
@@ -166,7 +166,7 @@ public class PreferencesPanel extends JPanel {
 
             String username = (String) jsonObject.get("username");
             String apiKey = (String) jsonObject.get("apiKey");
-            String token = (String) jsonObject.get("token");
+            /*String token = (String) jsonObject.get("token");
             String url = (String) jsonObject.get("url");
 
             if (url.equals("http:\\/\\/localhost:5001\\/api\\/")) {
@@ -179,11 +179,11 @@ public class PreferencesPanel extends JPanel {
             }
             else {
                 urlTextField.setText(url);
-            }
+            }*/
 
             usernameTextField.setText(username);
             apiKeyTextField.setText(apiKey);
-            tokenTextField.setText(token);
+            //tokenTextField.setText(token);
             //tokenTextField.setText(System.getProperty("user.home"));
 
         } catch (Exception e) {
