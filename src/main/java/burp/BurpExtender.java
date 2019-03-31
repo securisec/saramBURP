@@ -126,6 +126,9 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 
             String uri = publicCallbacks.loadExtensionSetting("saram_url") +
                     "/" + publicCallbacks.loadExtensionSetting("saram_token") + "/";
+            uri = uri.replace("//","/");
+            uri = uri.replace("http:/","http://");
+            uri = uri.replace("https:/","https://");
 
             BurpExtender.publicCallbacks.issueAlert(uri);
 
