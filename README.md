@@ -24,6 +24,7 @@ Setup Burp Suite extension with the jar file:
     ![Step 1](images/burp1.png)
 
 - Set the URL, Token and Username in the extension config window
+    > Overwriting either the `apiKey` or the `Username` field will overwrite the local .saram.conf file
     ![Step 2](images/burp2.png)
 
 - Right click on proxy and send either the `Request`, or both `Request/Response` to the **Saram** server
