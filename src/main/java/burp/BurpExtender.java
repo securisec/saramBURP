@@ -88,7 +88,7 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 	        'command': 'Burp suite',
 	        'user': self.user, //username
 	        'comment': ['saramBURP'],
-	        'options': {L̥
+	        'options': {
 		        'marked': 2
 	        },
 	        'time': str(datetime.utcnow()) // Java has to timestamp this
@@ -105,14 +105,13 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
         String username = publicCallbacks.loadExtensionSetting("saram_user");
         json.put("user", username);
 
-        List<String> list = new ArrayList<>();
-
-        list.add("saramBURP");
-
-
-        json.put("comment", list);
-
         JSONObject insidejson = new JSONObject();
+        insidejson.put("text", "saramBURP");
+        insidejson.put("avatar", publicCallbacks.loadExtensionSetting("saram_avatar"));
+        insidejson.put("username", username);
+        json.put("comment", insidejson);
+
+        insidejson = new JSONObject();
         insidejson.put("marked", 2);
         json.put("options", insidejson);
 

@@ -25,7 +25,7 @@ public class PreferencesPanel extends JPanel {
     private JLabel apiKeyLabel;
     private JRadioButton remoteApiRadioButton;
     private JRadioButton localhostApiRadioButton;
-
+    private String avatarPicturePath = "/static/saramburp.png";
 
     public PreferencesPanel()
     {
@@ -82,12 +82,14 @@ public class PreferencesPanel extends JPanel {
                 BurpExtender.publicCallbacks.saveExtensionSetting("saram_token", String.valueOf(tokenTextField.getText()));
                 BurpExtender.publicCallbacks.saveExtensionSetting("saram_user", String.valueOf(usernameTextField.getText()));
                 BurpExtender.publicCallbacks.saveExtensionSetting("saram_api", String.valueOf(apiKeyTextField.getText()));
+                BurpExtender.publicCallbacks.saveExtensionSetting("saram_avatar", String.valueOf(avatarPicturePath));
                 //BurpExtender.publicCallbacks.issueAlert(String.valueOf(urlTextField.getText()));
 
                 // create or overwrite .saram.conf
                 JSONObject obj = new JSONObject();
                 obj.put("username", String.valueOf(usernameTextField.getText()));
                 obj.put("apiKey", String.valueOf(apiKeyTextField.getText()));
+                obj.put("avatar", String.valueOf(avatarPicturePath));
                 /*obj.put("token", String.valueOf(tokenTextField.getText()));
                 obj.put("url", String.valueOf(urlTextField.getText()));*/
 
@@ -166,6 +168,9 @@ public class PreferencesPanel extends JPanel {
 
             String username = (String) jsonObject.get("username");
             String apiKey = (String) jsonObject.get("apiKey");
+            if(jsonObject.containsKey("avatar")) {
+                avatarPicturePath = (String) jsonObject.get("avatar");
+            }
             /*String token = (String) jsonObject.get("token");
             String url = (String) jsonObject.get("url");
 
