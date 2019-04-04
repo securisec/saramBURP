@@ -37,7 +37,7 @@ public class PreferencesPanel extends JPanel {
         remoteApiRadioButton.addActionListener((e) -> {
             if (remoteApiRadioButton.isSelected()) {
                 localhostApiRadioButton.setSelected(false);
-                urlTextField.setText("https://saram.securisecctf.com/api/");
+                urlTextField.setText("https://app.saram.io/api/");
             }
                 }
         );
@@ -73,8 +73,8 @@ public class PreferencesPanel extends JPanel {
                     BurpExtender.publicCallbacks.saveExtensionSetting("saram_url", "http://localhost:5001/api/");
                 }
                 else if (remoteApiRadioButton.isSelected()){
-                    BurpExtender.publicCallbacks.saveExtensionSetting("saram_url", "https://saram.securisecctf.com/api/");
-                    urlTextField.setText("https://saram.securisecctf.com/api/");
+                    BurpExtender.publicCallbacks.saveExtensionSetting("saram_url", "https://app.saram.io/api/");
+                    urlTextField.setText("https://app.saram.io/api/");
                 }
                 else {
                     BurpExtender.publicCallbacks.saveExtensionSetting("saram_url", String.valueOf(urlTextField.getText()));
@@ -139,7 +139,7 @@ public class PreferencesPanel extends JPanel {
         jpanel.add(localhostApiRadioButton, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
 
         remoteApiRadioButton = new JRadioButton();
-        remoteApiRadioButton.setText("https://saram.securisecctf.com/api/");
+        remoteApiRadioButton.setText("https://app.saram.io/api/");
         remoteApiRadioButton.setVisible(true);
         jpanel.add(remoteApiRadioButton, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
 
@@ -178,9 +178,9 @@ public class PreferencesPanel extends JPanel {
                 localhostApiRadioButton.setSelected(true);
                 urlTextField.setText("http://localhost:5001/api/");
             }
-            else if (url.equals("https:\\/\\/saram.securisecctf.com\\/api\\/")) {
+            else if (url.equals("https:\\/\\/app.saram.io\\/api\\/")) {
                 remoteApiRadioButton.setSelected(true);
-                remoteApiRadioButton.setText("https://saram.securisecctf.com/api/");
+                remoteApiRadioButton.setText("https://app.saram.io/api/");
             }
             else {
                 urlTextField.setText(url);

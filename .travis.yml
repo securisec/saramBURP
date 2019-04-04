@@ -12,7 +12,7 @@ deploy:
   api_key:
     secure: SohvZ8h+eqkkNqpMptRq4y/hG1jU02hx6WO+Qd2BPZB3sD9Iz6Rkc8oUIGON2EycEUekz80kNl6JD8LKAsvj0L/SSsxIMkWJxO4COrEA+WB0GWfIT5rCn/pvxXY4X3/Rx9IEmvw4gR5egga+hfRaS3AC06M0zcQiK0NzlgbkLctRIf4TggqIPpfhp6RfhHGQljji2aUhNHsgMpzEGVKuwVzu15RnRfFxBJwVURX3yl4ik8D/wJqo2wBJjzU4FdygxJxId60Gc1Q/Mv3GkFKsDva0mALPgGkrg3aCbXiMKKkyMJuOHj89rGSRgLFjiLF0ncJ0SfsWUZsUCG2oSbrT3OA75Ieqh1KNr3V19cHfN94qwvJLtZeSYWU8Q1G026vBDju8tjjFB1HO9KtDyudJrG20nFLGO/4aXy9Hv79z/LvvsvCCObVL7koI7G2UNBKaPBbgBdWl94w44Io+dWnYKez/wa0lXL3lIAF6Kz05V2rqq7LlXPQnXrkEjgWJg89VT4FV7V/1XUl0FlunETY5ApUJLN8+SbIckmxDxVC6SL7e2NSfjiBYOgT6WqAUuhpu4y0ohKTKw615qgD9T9hBYCBu2k6lreowxzyOisfNYq1BsRbpwbzdsElkLdb7AP4hRFfUcIQK6bv1HvDfauIA6QgwBS2imGVqKJdEntoGvMY=
   file: "./build/libs/saramBURP.jar"
-  draft: true
+  draft: false
   skip_cleanup: true
   on:
     tags: true
