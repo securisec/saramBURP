@@ -137,6 +137,7 @@ public class BurpExtender implements IBurpExtender, IContextMenuFactory, Clipboa
 
             request.addHeader("x-saram-apikey", publicCallbacks.loadExtensionSetting("saram_api"));
             request.addHeader("x-saram-username", publicCallbacks.loadExtensionSetting("saram_user"));
+            request.addHeader("x-saram-avatar", publicCallbacks.loadExtensionSetting("saram_avatar"));
 
             request.setEntity(params);
             System.out.println(request);
