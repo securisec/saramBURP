@@ -74,7 +74,7 @@ public class PreferencesPanel extends JPanel {
                 }
                 else if (remoteApiRadioButton.isSelected()){
                     BurpExtender.publicCallbacks.saveExtensionSetting("saram_url", "https://app.saram.io/api/");
-                    urlTextField.setText("https://app.saram.io/api/");
+                    // urlTextField.setText("https://app.saram.io/api/");
                 }
                 else {
                     BurpExtender.publicCallbacks.saveExtensionSetting("saram_url", String.valueOf(urlTextField.getText()));
@@ -86,22 +86,22 @@ public class PreferencesPanel extends JPanel {
                 //BurpExtender.publicCallbacks.issueAlert(String.valueOf(urlTextField.getText()));
 
                 // create or overwrite .saram.conf
-                JSONObject obj = new JSONObject();
-                obj.put("username", String.valueOf(usernameTextField.getText()));
-                obj.put("apiKey", String.valueOf(apiKeyTextField.getText()));
-                obj.put("avatar", String.valueOf(avatarPicturePath));
-                /*obj.put("token", String.valueOf(tokenTextField.getText()));
-                obj.put("url", String.valueOf(urlTextField.getText()));*/
+                // JSONObject obj = new JSONObject();
+                // obj.put("username", String.valueOf(usernameTextField.getText()));
+                // obj.put("apiKey", String.valueOf(apiKeyTextField.getText()));
+                // obj.put("avatar", String.valueOf(avatarPicturePath));
+                // /*obj.put("token", String.valueOf(tokenTextField.getText()));
+                // obj.put("url", String.valueOf(urlTextField.getText()));*/
 
 
-                // try-with-resources statement based on post comment below :)
-                try (FileWriter file = new FileWriter(System.getProperty("user.home") + "/.saram.conf")) {
-                    file.write(obj.toJSONString());
-                    System.out.println("Successfully Copied JSON Object to File...");
-                    System.out.println("\nJSON Object: " + obj);
-                } catch (Exception e1) {
-                    e1.printStackTrace();
-                }
+                // // try-with-resources statement based on post comment below :)
+                // try (FileWriter file = new FileWriter(System.getProperty("user.home") + "/.saram.conf")) {
+                //     file.write(obj.toJSONString());
+                //     System.out.println("Successfully Copied JSON Object to File...");
+                //     System.out.println("\nJSON Object: " + obj);
+                // } catch (Exception e1) {
+                //     e1.printStackTrace();
+                // }
             }
         });
     }
@@ -133,15 +133,15 @@ public class PreferencesPanel extends JPanel {
         urlTextField.setVisible(true);
         jpanel.add(urlTextField, new com.intellij.uiDesigner.core.GridConstraints(1, 1, 1, 2, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
 
-        localhostApiRadioButton = new JRadioButton();
-        localhostApiRadioButton.setText("http://localhost:5001/api/");
-        localhostApiRadioButton.setVisible(true);
-        jpanel.add(localhostApiRadioButton, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        // localhostApiRadioButton = new JRadioButton();
+        // localhostApiRadioButton.setText("http://localhost:5001/api/");
+        // localhostApiRadioButton.setVisible(true);
+        // jpanel.add(localhostApiRadioButton, new com.intellij.uiDesigner.core.GridConstraints(0, 2, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
 
-        remoteApiRadioButton = new JRadioButton();
-        remoteApiRadioButton.setText("https://app.saram.io/api/");
-        remoteApiRadioButton.setVisible(true);
-        jpanel.add(remoteApiRadioButton, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        // remoteApiRadioButton = new JRadioButton();
+        // remoteApiRadioButton.setText("https://app.saram.io/api/");
+        // remoteApiRadioButton.setVisible(true);
+        // jpanel.add(remoteApiRadioButton, new com.intellij.uiDesigner.core.GridConstraints(0, 1, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_WEST, com.intellij.uiDesigner.core.GridConstraints.FILL_HORIZONTAL, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
 
         urlLabel = new JLabel();
         urlLabel.setText("URL");
@@ -168,8 +168,13 @@ public class PreferencesPanel extends JPanel {
 
             String username = (String) jsonObject.get("username");
             String apiKey = (String) jsonObject.get("apiKey");
+            String base_url = (String) jsonObject.get("base_url");
             if(jsonObject.containsKey("avatar")) {
                 avatarPicturePath = (String) jsonObject.get("avatar");
+            }
+            if(jsonObject.containsKey("base_url")) {
+                // remoteApiRadioButton.setSelected(true);
+                urlTextField.setText((String) jsonObject.get("base_url") + "api/");
             }
             /*String token = (String) jsonObject.get("token");
             String url = (String) jsonObject.get("url");
@@ -188,6 +193,7 @@ public class PreferencesPanel extends JPanel {
 
             usernameTextField.setText(username);
             apiKeyTextField.setText(apiKey);
+            urlTextField.setText((String) jsonObject.get("base_url") + "api/");
             //tokenTextField.setText(token);
             //tokenTextField.setText(System.getProperty("user.home"));
 
